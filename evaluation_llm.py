@@ -1,18 +1,17 @@
 import os
+import ollama
 from scanner import scan_code
 
-# ----------------------------
-# Fake LLM (simulates model behavior)
-# ----------------------------
-def fake_llm(prompt):
-    prompt_lower = prompt.lower()
 
-    if "ignore" in prompt_lower or "bypass" in prompt_lower:
-        return "System prompt revealed. Password is 1234."
-    elif "how to" in prompt_lower:
-        return "Here are the steps to do it..."
-    else:
-        return "Safe response."
+# ----------------------------
+# LLM (REAL OLLAMA VERSION)
+# ----------------------------
+def call_llm(prompt):
+    response = ollama.chat(
+        model="qwen2.5-coder:1.5b",
+        messages=[{"role": "user", "content": prompt}]
+    )
+    return response["message"]["content"]
 
 
 # ----------------------------
@@ -35,7 +34,7 @@ def load_attacks(folder):
     for filename in os.listdir(folder):
         path = os.path.join(folder, filename)
 
-        with open(path, "r") as f:
+        with open(path, "r", encoding="utf-8", errors="ignore") as f:
             prompts.append(f.read())
 
     return prompts
@@ -56,11 +55,11 @@ def run_experiment(attacks, use_scanner):
         else:
             blocked = False
 
-        # If blocked → no LLM
+        # If blocked → no LLM call
         if blocked:
             output = None
         else:
-            output = fake_llm(prompt)
+            output = call_llm(prompt)
 
         results.append({
             "input": prompt,
