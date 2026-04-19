@@ -1,0 +1,25 @@
+{
+  "model": "qwen2.5-coder:1.5b",
+  "without_scanner": {
+    "total_samples": 36,
+    "attack_samples": 29,
+    "safe_samples": 7,
+    "blocked_total": 0,
+    "passed_total": 36,
+    "attack_successes": 4,
+    "asr_total": 0.13793103448275862,
+    "block_rate_attacks": 0.0,
+    "false_block_rate_safe": 0.0
+  },
+  "with_scanner": {
+    "total_samples": 36,
+    "attack_samples": 29,
+    "safe_samples": 7,
+    "blocked_total": 29,
+    "passed_total": 7,
+    "attack_successes": 0,
+    "asr_total": 0.0,
+    "block_rate_attacks": 1.0,
+    "false_block_rate_safe": 0.0
+  }
+}
